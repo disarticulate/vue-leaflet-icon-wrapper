@@ -1,0 +1,61 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "impliedStrict": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "globals": {
+    "jest": true,
+    "describe": true,
+    "it": true,
+    "test": true,
+    "expect": true,
+    "should": true,
+    "assert": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "beforeAll": true,
+    "afterAll": true,
+    "before": true,
+    "after": true
+  },
+  "rules": {
+    'semi': 'off',
+    'max-len': 'off',
+    'no-underscore-dangle': 'off',
+    'no-nested-ternary': 'off',
+    // allow async-await
+    'generator-star-spacing': 'off',
+    // allow paren-less arrow functions
+    'no-console': 'off',
+    'arrow-parens': 'off',
+    'one-var': 'off',
+    'import/default': 'off',
+    'no-useless-call': 'off',
+    //'import/default': 'error',
+    'no-sequences': 'off',
+    'no-labels':'off',
+    'no-throw-literal': 'off',
+    'no-unused-vars': 'off',
+    'no-unused-expressions': 'off',
+    'import/first': 'off',
+    'import/named': 'error',
+    'import/namespace': 'error',
+    'import/export': 'error',
+    'no-restricted-syntax': 'off',
+    'no-continue': 'off',
+    'import/extensions': 'off',
+    'import/no-unresolved': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    'prefer-promise-reject-errors': 'off',
+    'import/no-webpack-loader-syntax': 'off',
+  }
+}
