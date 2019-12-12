@@ -20,4 +20,7 @@ if (GlobalVue) {
 	GlobalVue.use(plugin);
 }
 
+export {
+  plugin
+};
 export default defaultWrapper;

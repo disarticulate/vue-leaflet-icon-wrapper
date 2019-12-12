@@ -2,17 +2,23 @@
   <component :class="componentClassRef"
     :ref="componentClassRef"
     :is="component"
+    v-bind="componentProps"
   >
     <slot></slot>
   </component>
 </template>
 <script>
+import Vue from 'vue'
 import { uuid } from '../utils/uuid'
 export default {
   name: 'leafletIconWrapper',
   props: {
     component: {
       type: String
+    },
+    componentProps: {
+      type: Object,
+      default: () => ({})
     }
   },
   data () {
@@ -26,11 +32,14 @@ export default {
       if (!vm.componentInstance) {
         vm.componentInstance = vm.instantiate(vm.componentClassSelector, vm)
       }
+      vm.$emit('ready', vm, vm.componentClassSelector)
     })
     document.leave(vm.componentClassSelector, function () {
       vm.componentInstance.$destroy()
       vm.componentInstance = null
+      vm.$emit('destroy', vm)
     })
+
   },
   methods: {
     instantiate (selector, vm) {
@@ -40,6 +49,12 @@ export default {
         ...exists.$options,
         el: selector
       })
+    }
+  },
+  beforeDestroy () {
+    let vm = this
+    for (const el of document.querySelectorAll(vm.componentClassSelector)) {
+      el.remove()
     }
   },
   computed: {
