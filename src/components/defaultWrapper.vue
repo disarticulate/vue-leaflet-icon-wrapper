@@ -13,6 +13,7 @@ import { uuid } from '../utils/uuid'
 export default {
   name: 'leafletIconWrapper',
   props: {
+    parentVm: Object,
     component: {
       type: String
     },
@@ -28,34 +29,36 @@ export default {
   },
   mounted () {
     let vm = this
-    document.arrive(vm.componentClassSelector, function () {
+    document.arrive(vm.componentClassSelector, vm.hasComponent)
+    document.leave(vm.componentClassSelector, vm.destroyComponent)
+  },
+  methods: {
+    hasComponent () {
+      let vm = this
       if (!vm.componentInstance) {
         vm.componentInstance = vm.instantiate(vm.componentClassSelector, vm)
       }
-      vm.$emit('ready', vm, vm.componentClassSelector)
-    })
-    document.leave(vm.componentClassSelector, function () {
+      document.unbindArrive(vm.componentClassSelector, vm.hasComponent)
+    },
+    destroyComponent () {
+      let vm = this
       vm.componentInstance.$destroy()
       vm.componentInstance = null
-      vm.$emit('destroy', vm)
-    })
-
-  },
-  methods: {
+      document.unbindLeave(vm.componentClassSelector, vm.destroyComponent)
+    },
     instantiate (selector, vm) {
       let exists = vm.$refs[vm.componentClassRef]
       let Component = Vue.extend(exists.constructor)
       return new Component({
         ...exists.$options,
+        parent: vm.parentVm,
         el: selector
       })
     }
   },
   beforeDestroy () {
     let vm = this
-    for (const el of document.querySelectorAll(vm.componentClassSelector)) {
-      el.remove()
-    }
+    vm.destroyComponent()
   },
   computed: {
     componentClassRef () {
