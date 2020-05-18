@@ -42,8 +42,10 @@ export default {
     },
     destroyComponent () {
       let vm = this
-      vm.componentInstance.$destroy()
-      vm.componentInstance = null
+      if (vm.componentInstance) {
+        vm.componentInstance.$destroy()
+        vm.componentInstance = null
+      }
       document.unbindLeave(vm.componentClassSelector, vm.destroyComponent)
     },
     instantiate (selector, vm) {
